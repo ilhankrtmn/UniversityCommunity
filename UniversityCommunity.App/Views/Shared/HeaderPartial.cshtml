@@ -10,8 +10,14 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("GameList","Customer")">
-                        Ana Sayfa
+                    <a class="nav-link" href="@Url.Action("CommunityList","Community")">
+                        Topluluklar
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("AnnouncementList","Announcement")">
+                        Duyurular
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
@@ -33,26 +39,30 @@
 
                 </div>
                 </li>*@
-                <li class="nav-item  dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
-                        Profil Bilgilerim
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#"></a>
-                        <a class="dropdown-item" href="@Url.Action("AccountInformation","Customer")">Hesap Bilgilerim</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="@Url.Action("GameHistory","Customer")">Oyun Geçmişi</a>
-                    </div>
-                </li>
+                @* <li class="nav-item  dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                Profil Bilgilerim
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#"></a>
+                <a class="dropdown-item" href="@Url.Action("AccountInformation","Customer")">Hesap Bilgilerim</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="@Url.Action("GameHistory","Customer")">Oyun Geçmişi</a>
+                </div>
+                </li> *@
 
             </ul>
-            <form action="#" method="post" class="form-inline my-2 my-lg-0 header-search">
+
+
+            @* <form action="#" method="post" class="form-inline my-2 my-lg-0 header-search">
                 <input class="form-control mr-sm-2" type="search" placeholder="Aranacak kelime..." name="Search" required="">
                 <button class="btn btn1 my-2 my-sm-0" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
-            </form>
+            </form> *@
+
+
         </div>
     </nav>
 

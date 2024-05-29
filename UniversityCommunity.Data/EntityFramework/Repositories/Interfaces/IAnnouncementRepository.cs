@@ -3,8 +3,8 @@ using UniversityCommunity.Data.EntityFramework.Entities;
 
 namespace UniversityCommunity.Data.EntityFramework.Repositories.Interfaces
 {
-    public interface ICustomerRepository : IRepositoryBase<Customer>
+    public interface IAnnouncementRepository : IRepositoryBase<Announcement>
     {
-        //Task<List<Cities>> GetCityDataAsync();
+        Task<List<Announcement>> GetAllAnnouncementAsync();
     }
 }

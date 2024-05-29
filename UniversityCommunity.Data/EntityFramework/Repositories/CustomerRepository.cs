@@ -14,12 +14,12 @@ namespace UniversityCommunity.Data.EntityFramework.Repositories
             _context = context;
         }
 
-        public async Task<List<Cities>> GetCityDataAsync()
-        {
-            return await _context.Cities
-             .OrderBy(p => p.CityID)
-            .ToListAsync();
-        }
+        //public async Task<List<Cities>> GetCityDataAsync()
+        //{
+        //    return await _context.Cities
+        //     .OrderBy(p => p.CityID)
+        //    .ToListAsync();
+        //}
 
         //public async Task AddCustomerTransaction(CustomerSaveTransactionDto customerSaveTransactionDto)
         //{
