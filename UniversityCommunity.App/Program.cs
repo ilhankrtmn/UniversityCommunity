@@ -35,7 +35,7 @@ try
 
     app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Authentication}/{action=Login}");
+        pattern: "{controller=Community}/{action=CommunityList}");
 
     app.Run();
 

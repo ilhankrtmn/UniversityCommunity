@@ -10,11 +10,12 @@ namespace UniversityCommunity.Data.EntityFramework
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-748VRTV;database=StudentTracking; integrated security=true;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-748VRTV;database=UniversityCommunity; integrated security=true;TrustServerCertificate=True;");
         }
 
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Cities> Cities { get; set; }
+        public DbSet<Community> Communities { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<OutgoingMail> OutgoingMails { get; set; }
@@ -26,8 +27,11 @@ namespace UniversityCommunity.Data.EntityFramework
             modelBuilder.Entity<Customer>().Property(p => p.Createdate).HasDefaultValue(DateTime.Now);
             modelBuilder.Entity<Customer>().Property(p => p.Status).HasDefaultValue(0);
 
-            modelBuilder.Entity<Cities>().HasKey(p => p.CityID);
-            modelBuilder.Entity<Cities>().Property(p => p.Priority).HasDefaultValue(0);
+            modelBuilder.Entity<Community>().HasKey(p => p.Id);
+            modelBuilder.Entity<Community>().Property(p => p.CreatedDate).HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<Announcement>().HasKey(p => p.Id);
+            modelBuilder.Entity<Announcement>().Property(p => p.CreatedDate).HasDefaultValue(DateTime.Now);
 
             modelBuilder.Entity<User>().HasKey(p => p.Id);
             modelBuilder.Entity<User>().Property(p => p.CreatedDate).HasDefaultValue(DateTime.Now);
