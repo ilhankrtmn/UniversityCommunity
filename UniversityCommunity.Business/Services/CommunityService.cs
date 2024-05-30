@@ -16,9 +16,14 @@ namespace UniversityCommunity.Business.Services
             _communityRepository = communityRepository;
         }
 
-        public async Task<List<Community>> GetCommunityAsync()
+        public async Task<List<Community>> GetCommunityListAsync()
         {
             return await _communityRepository.GetAllCommunityAsync();
+        }
+
+        public async Task<Community> GetCommunityAsync(int communityId)
+        {
+            return await _communityRepository.FindAsync(p => p.Id == communityId);
         }
     }
 }

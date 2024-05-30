@@ -57,7 +57,6 @@ namespace UniversityCommunity.Business.Services
 
         public async Task<bool> CheckOtp(CheckOtpRequestDto requestDto)
         {
-            //TODO: Bu kısımda mail adresi dışardan gelmeli
             requestDto.Email = "ilhankertmen_@outlook.com";
             var user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
             if (user == null)
@@ -69,7 +68,6 @@ namespace UniversityCommunity.Business.Services
             if (entryID > 0)
             {
                 await _outgoingMailRepository.UpdateUserEmailOtpAsync(Convert.ToInt32(entryID));
-                //TODO Burada OutgoingMails tablosu da update edilebilir.
                 return true;
             }
 
@@ -78,7 +76,6 @@ namespace UniversityCommunity.Business.Services
 
         public async Task<bool> ResetPassword(ResetPasswordRequestDto requestDto)
         {
-            //TODO: Bu kısımda mail adresi dışardan gelmeli
             requestDto.UserId = 1;
             var user = await _userRepository.FindAsync(p => p.Id == requestDto.UserId);
             if (user == null)

@@ -98,7 +98,6 @@ namespace UniversityCommunity.App.Controllers
         public async Task<IActionResult> SendOtp(SendOtpRequestDto requestDto)
         {
             var response = await _authenticationService.SendOtp(requestDto);
-            // TODO false ise ön yüzde bir mesaj gösterebilirsin.
             return (response == true) ? RedirectToAction("CheckOtp", "Authentication") : RedirectToAction("SendOtp", "Authentication");
         }
 
@@ -111,10 +110,8 @@ namespace UniversityCommunity.App.Controllers
         [HttpPost]
         public async Task<IActionResult> CheckOtp(CheckOtpRequestDto requestDto)
         {
-            //TODO Email bilgisinin session ile buraya akması lazım. Hatta bu bilgiyi gönderebilirsen UserId değerini de akıt.
             var response = await _authenticationService.CheckOtp(requestDto);
 
-            // TODO false ise ön yüzde bir mesaj gösterebilirsin.
             return (response == true) ? RedirectToAction("ResetPassword", "Authentication") : RedirectToAction("CheckOtp", "Authentication");
         }
 
@@ -129,8 +126,6 @@ namespace UniversityCommunity.App.Controllers
         {
             var response = await _authenticationService.ResetPassword(requestDto);
 
-            // TODO false ise ön yüzde bir mesaj gösterebilirsin.
-            // TODO Burada istediğim sayfa yönlendirme işlemini yapmıyor. View tarafından kaynaklı duruyor. Kontrol et.
             return (response == true) ? RedirectToAction("Login", "Authentication") : RedirectToAction("ResetPassword", "Authentication");
         }
 

@@ -1,0 +1,89 @@
+﻿@model UniversityCommunity.Data.Models.PageModel.CommunityforPage;
+@{
+    ViewData["Title"] = "CommunityDetail";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+    <main>
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="contact-box">
+                    <div class="contact-info">
+                        <div class="logo">
+                            @*<img src="https://samsun.edu.tr/wp-content/uploads/2023/02/mavi-logo.png" alt="">*@
+                            <img src="@Model.Community.Image" class="card-img-top img-fluid" alt="">
+
+                        </div>
+                        @* <h3 class="title">Topluluk İsmi</h3> *@
+                        <h3 class="title">@Model.Community.Title</h3>
+                        <p class="text">
+                            @Model.Community.Description
+                        </p>
+                        @* TODO Buraların veri tabanından okunacak şekilde al. *@
+                        <a href=""><h4>Yönetim Kurulu</h4></a>
+                        <p>-------</p>
+                        <a href=""><h4>Denetim Kurulu</h4></a>
+                        <p>-------</p>
+                        <a href=""><h4>Topluluk üyeleri</h4></a>
+                        <p>-------</p>
+                        <div class="information-wrap">
+                            <div class="information">
+                                <div class="contact-icon">
+                                    <i class="fas fa-paper-plane"></i>
+                                </div>
+                                <a href="#" class="info-text">@Model.Community.Email</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="links">
+                        @* TODO burayı form haline getir. *@
+                        <div class="contact-form">
+                            <h3 class="title">Topluluğa Kaydol</h3>
+                            <div class="row">
+                                <input type="text"
+                                       class="contact-input"
+                                       placeholder="İsim" />
+                                <input type="text"
+                                       class="contact-input"
+                                       placeholder="Soy İsim" />
+                            </div>
+
+                            <div class="row">
+                                <input type="text" class="contact-input" placeholder="Öğrenci Numarası" />
+                                <input type="email" class="contact-input" placeholder="Bölümü" />
+                            </div>
+
+                            <div class="row">
+                                <textarea name="message"
+                                          class="contact-input textarea"
+                                          placeholder="Message"></textarea>
+                            </div>
+                        </div>
+                        <a href="#" class="active">Topluluğa Üye Ol</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+    <div class="card-wrap">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="./js/isotope.pkgd.min.js"></script>
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
+        <script src="~/js/isotope.pkgd.min.js" asp-append-version="true"></script>
+</body>
+</html>
