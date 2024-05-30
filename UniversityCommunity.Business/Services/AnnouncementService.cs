@@ -17,9 +17,14 @@ namespace UniversityCommunity.Business.Services
             _announcementRepository = announcementRepository;
         }
 
-        public async Task<List<Announcement>> GetAnnouncementAsync()
+        public async Task<List<Announcement>> GetAnnouncementListAsync()
         {
             return await _announcementRepository.GetAllAnnouncementAsync();
+        }
+
+        public async Task<Announcement> GetAnnouncementAsync(int announcementId)
+        {
+            return await _announcementRepository.FindAsync(p => p.Id == announcementId);
         }
     }
 }

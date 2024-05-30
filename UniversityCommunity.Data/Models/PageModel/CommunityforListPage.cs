@@ -6,4 +6,9 @@ namespace UniversityCommunity.Data.Models.PageModel
     {
         public List<Community> Communities { get; set; }
     }
+
+    public class CommunityforPage
+    {
+        public Community Community { get; set; }
+    }
 }

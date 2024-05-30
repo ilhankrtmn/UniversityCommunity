@@ -18,9 +18,20 @@ namespace UniversityCommunity.App.Controllers
         {
             CommunityforListPage communityforListPage = new CommunityforListPage();
 
-            communityforListPage.Communities = await _communityService.GetCommunityAsync();
+            communityforListPage.Communities = await _communityService.GetCommunityListAsync();
 
             return View(communityforListPage);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CommunityDetail(int communityId)
+        {
+            //TODO Bu endpoint view kısmında yapılacak işlemler var.
+            CommunityforPage communityforPage = new CommunityforPage();
+
+            communityforPage.Community = await _communityService.GetCommunityAsync(communityId);
+
+            return View(communityforPage);
         }
     }
 }

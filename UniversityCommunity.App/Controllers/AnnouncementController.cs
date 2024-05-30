@@ -19,9 +19,19 @@ namespace UniversityCommunity.App.Controllers
         {
             AnnouncementforListPage announcementforListPage = new AnnouncementforListPage();
 
-            announcementforListPage.Announcements = await _announcementService.GetAnnouncementAsync();
+            announcementforListPage.Announcements = await _announcementService.GetAnnouncementListAsync();
 
             return View(announcementforListPage);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AnnouncementDetail(int announcementId)
+        {
+            AnnouncementforPage announcementforPage = new AnnouncementforPage();
+
+            announcementforPage.Announcement = await _announcementService.GetAnnouncementAsync(announcementId);
+
+            return View(announcementforPage);
         }
     }
 }

@@ -1,0 +1,51 @@
+﻿@model UniversityCommunity.Data.Models.PageModel.AnnouncementforPage;
+
+@{
+    ViewData["Title"] = "AnnouncementDetail";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+    <main>
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="lead mx-auto" style="text-align: center;">
+                    <div class="form-group">
+                        <img src="@Model.Announcement.Image" alt="" class="announcement-image">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group"></div>
+                        <h3 class="title">@Model.Announcement.Title</h3>
+                        <p class="text">@Model.Announcement.Description</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="services section" >
+            <div class="container">
+                <div class="section-header">
+                    <a href="/Announcement/AnnouncementList" class="btn">
+                        <h3 class="title" data-title="SAMSUN ÜNİVERSİTESİ">DİĞER DUYURULAR</h3>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div class="card-wrap">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="./js/isotope.pkgd.min.js"></script>
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
+        <script src="~/js/isotope.pkgd.min.js" asp-append-version="true"></script>
+    </div>
+</body>
+</html>

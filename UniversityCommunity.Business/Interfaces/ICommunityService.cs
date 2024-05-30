@@ -4,6 +4,7 @@ namespace UniversityCommunity.Business.Interfaces
 {
     public interface ICommunityService
     {
-        Task<List<Community>> GetCommunityAsync();
+        Task<List<Community>> GetCommunityListAsync();
+        Task<Community> GetCommunityAsync(int communityId);
     }
 }

@@ -4,6 +4,7 @@ namespace UniversityCommunity.Business.Interfaces
 {
     public interface IAnnouncementService
     {
-        Task<List<Announcement>> GetAnnouncementAsync();
+        Task<List<Announcement>> GetAnnouncementListAsync();
+        Task<Announcement> GetAnnouncementAsync(int announcementId);
     }
 }
