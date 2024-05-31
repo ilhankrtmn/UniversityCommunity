@@ -1246,3 +1246,20 @@ Footer .footer .title-sm {
     margin-bottom: 20px;
 }
 /* End Responsive */
+
+.center-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Yüksekliði tarayýcý penceresinin tamamý kadar yapar */
+}
+
+.form-container {
+    width: 100%;
+    max-width: 600px; /* Formun geniþliðini belirleyin */
+    margin: 0 auto; /* Otomatik marjinler ile ortalama */
+    padding: 20px; /* Ýsteðe baðlý olarak iç boþluk ekleyebilirsiniz */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ýsteðe baðlý olarak gölge ekleyebilirsiniz */
+    background-color: #fff; /* Arka plan rengini belirleyin */
+    border-radius: 8px; /* Köþeleri yuvarlayabilirsiniz */
+}

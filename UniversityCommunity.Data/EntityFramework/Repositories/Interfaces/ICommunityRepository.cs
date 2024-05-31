@@ -5,6 +5,5 @@ namespace UniversityCommunity.Data.EntityFramework.Repositories.Interfaces
 {
     public interface ICommunityRepository : IRepositoryBase<Community>
     {
-        Task<List<Community>> GetAllCommunityAsync();
     }
 }

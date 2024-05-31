@@ -13,10 +13,5 @@ namespace UniversityCommunity.Data.EntityFramework.Repositories
         {
             _context = context;
         }
-
-        public async Task<List<Announcement>> GetAllAnnouncementAsync()
-        {
-            return await _context.Announcements.Where(p => p.Status == true).ToListAsync();
-        }
     }
 }
