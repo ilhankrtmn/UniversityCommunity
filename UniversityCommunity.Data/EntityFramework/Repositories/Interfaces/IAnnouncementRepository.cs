@@ -5,6 +5,5 @@ namespace UniversityCommunity.Data.EntityFramework.Repositories.Interfaces
 {
     public interface IAnnouncementRepository : IRepositoryBase<Announcement>
     {
-        Task<List<Announcement>> GetAllAnnouncementAsync();
     }
 }
