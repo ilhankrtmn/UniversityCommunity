@@ -9,11 +9,14 @@ namespace UniversityCommunity.Business.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICommunityRepository _communityRepository;
+        private readonly ICommunityMemberRepository _communityMemberRepository;
 
-        public CommunityService(IUnitOfWork unitOfWork, ICommunityRepository communityRepository)
+        public CommunityService(IUnitOfWork unitOfWork, ICommunityRepository communityRepository, ICommunityMemberRepository communityMemberRepository
+            )
         {
             _unitOfWork = unitOfWork;
             _communityRepository = communityRepository;
+            _communityMemberRepository = communityMemberRepository;
         }
 
         public async Task<List<Community>> GetCommunityListAsync()
@@ -49,5 +52,7 @@ namespace UniversityCommunity.Business.Services
             }
             return false;
         }
+
+        
     }
 }

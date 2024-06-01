@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json;
-using Org.BouncyCastle.Bcpg.OpenPgp;
-using UniversityCommunity.Business.Interfaces;
+﻿using UniversityCommunity.Business.Interfaces;
 using UniversityCommunity.Data;
-using UniversityCommunity.Data.EntityFramework.Repositories;
 using UniversityCommunity.Data.EntityFramework.Repositories.Interfaces;
 using UniversityCommunity.Data.EntityFramework.UnitOfWork;
 using UniversityCommunity.Data.Models;
@@ -12,29 +9,29 @@ namespace UniversityCommunity.Business.Services
     public class AuthenticationService : IAuthenticationService, IScopedService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserRepository _userRepository;
+        private readonly ICommunityMemberRepository _communityMemberRepository;
         private readonly IOutgoingMailRepository _outgoingMailRepository;
         private readonly IEmailService _emailService;
 
-        public AuthenticationService(IUnitOfWork unitOfWork, IUserRepository userRepository, IOutgoingMailRepository outgoingMailRepository,
+        public AuthenticationService(IUnitOfWork unitOfWork, ICommunityMemberRepository communityMemberRepository, IOutgoingMailRepository outgoingMailRepository,
             IEmailService emailService)
         {
             _unitOfWork = unitOfWork;
-            _userRepository = userRepository;
+            _communityMemberRepository = communityMemberRepository;
             _outgoingMailRepository = outgoingMailRepository;
             _emailService = emailService;
         }
 
         public async Task<int> CheckCustomerLogin(string email, string password)
         {
-            var user = await _userRepository.FindAsync(p => p.Email == email && p.Password == password);
+            var user = await _communityMemberRepository.FindAsync(p => p.Email == email && p.Password == password);
 
             return (user == null) ? 0 : user.Id;
         }
 
         public async Task<bool> SendOtp(SendOtpRequestDto requestDto)
         {
-            var user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
+            var user = await _communityMemberRepository.FindAsync(p => p.Email == requestDto.Email);
             if (user == null)
             {
                 return false;
@@ -58,7 +55,7 @@ namespace UniversityCommunity.Business.Services
         public async Task<bool> CheckOtp(CheckOtpRequestDto requestDto)
         {
             requestDto.Email = "ilhankertmen_@outlook.com";
-            var user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
+            var user = await _communityMemberRepository.FindAsync(p => p.Email == requestDto.Email);
             if (user == null)
             {
                 return false;
@@ -77,15 +74,14 @@ namespace UniversityCommunity.Business.Services
         public async Task<bool> ResetPassword(ResetPasswordRequestDto requestDto)
         {
             requestDto.UserId = 1;
-            var user = await _userRepository.FindAsync(p => p.Id == requestDto.UserId);
+            var user = await _communityMemberRepository.FindAsync(p => p.Id == requestDto.UserId);
             if (user == null)
             {
                 return false;
             }
 
             user.Password = requestDto.Password;
-            user.UpdatedDate = DateTime.Now;
-            _userRepository.Update(user);
+            _communityMemberRepository.Update(user);
             await _unitOfWork.CompleteAsync();
             return true;
         }

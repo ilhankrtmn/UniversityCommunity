@@ -1,10 +1,11 @@
 ﻿using UniversityCommunity.Data.EntityFramework.Base;
 using UniversityCommunity.Data.EntityFramework.Entities;
+using UniversityCommunity.Data.Models;
 
 namespace UniversityCommunity.Data.EntityFramework.Repositories.Interfaces
 {
-    public interface ICustomerRepository : IRepositoryBase<Customer>
+    public interface ICommunityMemberRepository : IRepositoryBase<CommunityMember>
     {
-        //Task<List<Cities>> GetCityDataAsync();
+        bool CheckCommunityMember(CheckCommunityMemberRequestDto requestDto);
     }
 }
