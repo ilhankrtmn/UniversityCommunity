@@ -3,7 +3,7 @@ using UniversityCommunity.Data.EntityFramework.Entities;
 
 namespace UniversityCommunity.Business.ValidationRules
 {
-    public class RegisterValidator : AbstractValidator<Customer>
+    public class RegisterValidator : AbstractValidator<User>
     {
         public RegisterValidator()
         {

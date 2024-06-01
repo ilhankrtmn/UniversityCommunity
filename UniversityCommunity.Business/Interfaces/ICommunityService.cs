@@ -1,4 +1,5 @@
 ﻿using UniversityCommunity.Data.EntityFramework.Entities;
+using UniversityCommunity.Data.Models.PageModel;
 
 namespace UniversityCommunity.Business.Interfaces
 {
@@ -9,5 +10,6 @@ namespace UniversityCommunity.Business.Interfaces
         Task<Community> GetCommunityAsync(int communityId);
         Task SaveorUpdateCommunity(Community community);
         Task<bool> DeleteCommunity(int communityId);
+        Task<bool> SaveCommunityMember(CommunityforPage requestDto);
     }
 }

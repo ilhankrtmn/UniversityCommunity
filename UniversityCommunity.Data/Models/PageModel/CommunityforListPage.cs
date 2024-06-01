@@ -10,5 +10,6 @@ namespace UniversityCommunity.Data.Models.PageModel
     public class CommunityforPage
     {
         public Community Community { get; set; }
+        public CommunityMember CommunityMember { get; set; }
     }
 }
