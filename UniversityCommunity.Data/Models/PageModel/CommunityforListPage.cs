@@ -1,4 +1,5 @@
-﻿using UniversityCommunity.Data.EntityFramework.Entities;
+﻿using System.Web.Mvc;
+using UniversityCommunity.Data.EntityFramework.Entities;
 
 namespace UniversityCommunity.Data.Models.PageModel
 {
@@ -14,5 +15,16 @@ namespace UniversityCommunity.Data.Models.PageModel
         public string CommunityAdvisorAccount { get; set; }
         public string CommunityLeaderAccount { get; set; }
         public List<string> CommunityMembers { get; set; }
+
+
+
+        public string AdvisorId { get; set; }
+        public string AdvisorName { get; set; }
+        public IEnumerable<SelectListItem> AdvisorList { get; set; }
+
+
+        public string LeaderId { get; set; }
+        public string LeaderName { get; set; }
+        public IEnumerable<SelectListItem> LeaderList { get; set; }
     }
 }

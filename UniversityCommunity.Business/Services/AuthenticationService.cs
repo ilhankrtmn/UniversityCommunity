@@ -9,29 +9,29 @@ namespace UniversityCommunity.Business.Services
     public class AuthenticationService : IAuthenticationService, IScopedService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICommunityMemberRepository _communityMemberRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IOutgoingMailRepository _outgoingMailRepository;
         private readonly IEmailService _emailService;
 
-        public AuthenticationService(IUnitOfWork unitOfWork, ICommunityMemberRepository communityMemberRepository, IOutgoingMailRepository outgoingMailRepository,
-            IEmailService emailService)
+        public AuthenticationService(IUnitOfWork unitOfWork, IOutgoingMailRepository outgoingMailRepository,
+            IEmailService emailService, IUserRepository userRepository)
         {
             _unitOfWork = unitOfWork;
-            _communityMemberRepository = communityMemberRepository;
             _outgoingMailRepository = outgoingMailRepository;
             _emailService = emailService;
+            _userRepository = userRepository;
         }
 
         public async Task<int> CheckCustomerLogin(string email, string password)
         {
-            var user = await _communityMemberRepository.FindAsync(p => p.Email == email && p.Password == password);
+            var user = await _userRepository.FindAsync(p => p.Email == email && p.Password == password);
 
             return (user == null) ? 0 : user.Id;
         }
 
         public async Task<bool> SendOtp(SendOtpRequestDto requestDto)
         {
-            var user = await _communityMemberRepository.FindAsync(p => p.Email == requestDto.Email);
+            var user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
             if (user == null)
             {
                 return false;
@@ -55,7 +55,7 @@ namespace UniversityCommunity.Business.Services
         public async Task<bool> CheckOtp(CheckOtpRequestDto requestDto)
         {
             requestDto.Email = "ilhankertmen_@outlook.com";
-            var user = await _communityMemberRepository.FindAsync(p => p.Email == requestDto.Email);
+            var user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
             if (user == null)
             {
                 return false;
@@ -74,14 +74,14 @@ namespace UniversityCommunity.Business.Services
         public async Task<bool> ResetPassword(ResetPasswordRequestDto requestDto)
         {
             requestDto.UserId = 1;
-            var user = await _communityMemberRepository.FindAsync(p => p.Id == requestDto.UserId);
+            var user = await _userRepository.FindAsync(p => p.Id == requestDto.UserId);
             if (user == null)
             {
                 return false;
             }
 
             user.Password = requestDto.Password;
-            _communityMemberRepository.Update(user);
+            _userRepository.Update(user);
             await _unitOfWork.CompleteAsync();
             return true;
         }

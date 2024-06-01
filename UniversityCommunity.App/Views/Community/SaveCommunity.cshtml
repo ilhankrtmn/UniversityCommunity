@@ -1,12 +1,11 @@
-﻿@model UniversityCommunity.Data.EntityFramework.Entities.Community;
+﻿@model UniversityCommunity.Data.Models.PageModel.CommunityforPage;
+@using System;
+@using System.Linq;
 
 @{
     ViewData["Title"] = "SaveCommunity";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
-
-@using System;
-@using System.Linq;
 
 <title>Topluluk</title>
 <section class="main-content-w3layouts-agileits center-form">
@@ -16,24 +15,24 @@
             <div class="section-header">
                 @using (Html.BeginForm("SaveCommunity", "Community", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return Validate(this);", onkeydown = "return event.key != 'Enter';" }))
                 {
-                    @Html.HiddenFor(model => model.Id)
-                    @Html.HiddenFor(model => model.CreatedDate)
+                    @Html.HiddenFor(model => model.Community.Id)
+                    @Html.HiddenFor(model => model.Community.CreatedDate)
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
                             <label for="validationCustom01">Görsel Url</label>
-                            @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off" } })
+                            @Html.EditorFor(model => model.Community.Image, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off" } })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
                             <label for="validationCustom01">İsim</label>
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off" } })
+                            @Html.EditorFor(model => model.Community.Title, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off" } })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
                             <label for="validationCustom01">Açıklama</label>
-                            @Html.TextAreaFor(model => model.Description, new
+                            @Html.TextAreaFor(model => model.Community.Description, new
                                 {
                                     @class = "maxlength-textarea form-control",
                                     @data_placement = "bottom-right-inside",
@@ -50,17 +49,35 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="exampleInputPassword1 mb-2">E-Posta Adresi</label>
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off", type = "email" } })
+                            @Html.EditorFor(model => model.Community.Email, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off", type = "email" } })
+                            @if (@ViewBag.ValidateControl != null)
+                            {
+                                <span class="panel-desc" style="font-weight: bold; color: red;">
+                                    @ViewBag.ValidateControl
+                                </span>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom01">Topluluk Danışmanı</label>
+                            @Html.DropDownListFor(model => model.Community.AdvisorId, new SelectList(Model.AdvisorList, "Text", "Value", 0), "Topluluk danışmanını seçiniz", new { @class = "form-control", required = "required", autocomplete = "off" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom01">Topluluk Başkanı</label>
+                            @Html.DropDownListFor(model => model.Community.LeaderId, new SelectList(Model.LeaderList, "Text", "Value", 0), "Topluluk başkanını seçiniz", new { @class = "form-control", required = "required", autocomplete = "off" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="exampleInputPassword1 mb-2">Durum</label>
-                            @Html.CheckBoxFor(model => model.Status, new { @class = "to-labelauty", name = "Status", data_plugin = "labelauty", data_labelauty = "No|Yes" })
+                            @Html.CheckBoxFor(model => model.Community.Status, new { @class = "to-labelauty", name = "Status", data_plugin = "labelauty", data_labelauty = "No|Yes" })
 
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary submit mb-4">Topluluk Oluştur</button>
+                    <button type="submit" class="btn btn-primary submit mb-4">İşlemi Kaydet</button>
                 }
             </div>
         </div>
