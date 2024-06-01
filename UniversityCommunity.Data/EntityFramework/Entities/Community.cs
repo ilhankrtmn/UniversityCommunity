@@ -3,6 +3,8 @@
     public class Community
     {
         public int Id { get; set; }
+        public int AdvisorId { get; set; }
+        public int LeaderId { get; set; }
         public string Image { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

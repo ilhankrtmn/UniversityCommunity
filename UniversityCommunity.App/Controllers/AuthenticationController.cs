@@ -50,7 +50,6 @@ namespace UniversityCommunity.App.Controllers
             //    }
             //    else
             //    {
-            //        //TODO else bloğuna düşerse yönlendirme alanını değiştir.
             //        return RedirectToAction("Login", "Customer");
             //    }
             //}

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UniversityCommunity.Business.Interfaces;
 using UniversityCommunity.Business.ValidationRules;
-using UniversityCommunity.Data.EntityFramework.Entities;
+using UniversityCommunity.Data.Models;
 using UniversityCommunity.Data.Models.PageModel;
 
 namespace UniversityCommunity.App.Controllers
@@ -44,8 +44,19 @@ namespace UniversityCommunity.App.Controllers
             CommunityforPage communityforPage = new CommunityforPage();
 
             communityforPage.Community = await _communityService.GetCommunityAsync(communityId);
-            communityforPage.CommunityAdvisorAccount = await _communityMemberService.CommunityAdvisorAccount(communityId);
-            communityforPage.CommunityLeaderAccount = await _communityMemberService.CommunityLeaderAccount(communityId);
+
+            communityforPage.CommunityAdvisorAccount = await _communityService.CommunityUserAccount(new CommunityUserAccountRequestDto
+            {
+                UserTypeId = 2,
+                UserId = communityforPage.Community.AdvisorId,
+            });
+
+            communityforPage.CommunityLeaderAccount = await _communityService.CommunityUserAccount(new CommunityUserAccountRequestDto
+            {
+                UserTypeId = 3,
+                UserId = communityforPage.Community.LeaderId,
+            });
+
             communityforPage.CommunityMembers = await _communityMemberService.CommunityMembers(communityId);
 
             ViewBag.ValidateControl = HttpContext.Session.GetString("ValidateControl");
@@ -56,17 +67,37 @@ namespace UniversityCommunity.App.Controllers
         [HttpGet]
         public async Task<IActionResult> SaveCommunity(int communityId)
         {
-            Community community = new Community();
-            community = await _communityService.GetCommunityAsync(communityId);
+            CommunityforPage communityforPage = new CommunityforPage();
 
-            return View(community);
+            communityforPage.Community = await _communityService.GetCommunityAsync(communityId);
+            communityforPage.AdvisorList = await _communityService.GetCommunityUserList(2);
+            communityforPage.LeaderList = await _communityService.GetCommunityUserList(3);
+
+            return View(communityforPage);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveCommunity(Community community)
+        public async Task<IActionResult> SaveCommunity(CommunityforPage communityforPage)
         {
-            await _communityService.SaveorUpdateCommunity(community);
-            return RedirectToAction("CommunityList", "Community");
+            CommunityValidator validationRules = new CommunityValidator();
+            ValidationResult validationResult = validationRules.Validate(communityforPage.Community);
+
+            if (validationResult.IsValid)
+            {
+                await _communityService.SaveorUpdateCommunity(communityforPage.Community);
+            }
+            else
+            {
+                foreach (var item in validationResult.Errors)
+                {
+                    ViewBag.ValidateControl = item.ErrorMessage;
+                }
+            }
+
+            communityforPage.AdvisorList = await _communityService.GetCommunityUserList(2);
+            communityforPage.LeaderList = await _communityService.GetCommunityUserList(3);
+
+            return View(communityforPage);
         }
 
         [HttpPost]

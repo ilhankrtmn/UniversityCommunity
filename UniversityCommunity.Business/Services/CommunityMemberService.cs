@@ -31,36 +31,18 @@ namespace UniversityCommunity.Business.Services
             }
             else
             {
-                requestDto.CommunityMember.UserTypeId = 4;
                 _communityMemberRepository.Add(requestDto.CommunityMember);
                 await _unitOfWork.CompleteAsync();
                 return true;
             }
         }
 
-        public async Task<string> CommunityAdvisorAccount(int communityId)
-        {
-            return (await _communityMemberRepository.FindListAsync(p => p.UserTypeId == 2 && p.CommunityId == communityId))
-                .OrderByDescending(p => p.CreatedDate)
-                .Select(p => $"{p.Name} {p.Surname}")
-                .FirstOrDefault();
-        }
-
-        public async Task<string> CommunityLeaderAccount(int communityId)
-        {
-            return (await _communityMemberRepository.FindListAsync(p => p.UserTypeId == 3 && p.CommunityId == communityId))
-                .OrderByDescending(p => p.CreatedDate)
-                .Select(p => $"{p.Name} {p.Surname}")
-                .FirstOrDefault();
-        }
-
         public async Task<List<string>> CommunityMembers(int communityId)
         {
-            return (await _communityMemberRepository.FindListAsync(p => p.UserTypeId == 4 && p.CommunityId == communityId))
+            return (await _communityMemberRepository.FindListAsync(p => p.CommunityId == communityId))
                 .OrderByDescending(p => p.CreatedDate)
                 .Select(p => $"{p.Name} {p.Surname}")
                 .ToList();
         }
-
     }
 }

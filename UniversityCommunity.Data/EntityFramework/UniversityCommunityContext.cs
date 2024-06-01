@@ -15,6 +15,7 @@ namespace UniversityCommunity.Data.EntityFramework
 
         public DbSet<Community> Communities { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<UserEmailOtp> UserEmailOtps { get; set; }
         public DbSet<OutgoingMail> OutgoingMails { get; set; }
@@ -27,6 +28,10 @@ namespace UniversityCommunity.Data.EntityFramework
 
             modelBuilder.Entity<Announcement>().HasKey(p => p.Id);
             modelBuilder.Entity<Announcement>().Property(p => p.CreatedDate).HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<User>().HasKey(p => p.Id);
+            modelBuilder.Entity<User>().Property(p => p.Status).HasDefaultValue(0);
+            modelBuilder.Entity<User>().Property(p => p.CreatedDate).HasDefaultValue(DateTime.Now);
 
             modelBuilder.Entity<UserType>().HasKey(p => p.Id);
 
