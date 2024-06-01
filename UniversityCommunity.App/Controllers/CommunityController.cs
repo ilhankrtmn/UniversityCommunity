@@ -10,10 +10,12 @@ namespace UniversityCommunity.App.Controllers
     public class CommunityController : Controller
     {
         private readonly ICommunityService _communityService;
+        private readonly ICommunityMemberService _communityMemberService;
 
-        public CommunityController(ICommunityService communityService)
+        public CommunityController(ICommunityService communityService, ICommunityMemberService communityMemberService)
         {
             _communityService = communityService;
+            _communityMemberService = communityMemberService;
         }
 
         [HttpGet]
@@ -39,10 +41,13 @@ namespace UniversityCommunity.App.Controllers
         [HttpGet]
         public async Task<IActionResult> CommunityDetail(int communityId)
         {
-            //TODO Bu endpoint view kısmında yapılacak işlemler var.
             CommunityforPage communityforPage = new CommunityforPage();
 
             communityforPage.Community = await _communityService.GetCommunityAsync(communityId);
+            communityforPage.CommunityAdvisorAccount = await _communityMemberService.CommunityAdvisorAccount(communityId);
+            communityforPage.CommunityLeaderAccount = await _communityMemberService.CommunityLeaderAccount(communityId);
+            communityforPage.CommunityMembers = await _communityMemberService.CommunityMembers(communityId);
+
             ViewBag.ValidateControl = HttpContext.Session.GetString("ValidateControl");
 
             return View(communityforPage);
@@ -78,7 +83,7 @@ namespace UniversityCommunity.App.Controllers
 
             if (validationResult.IsValid)
             {
-                bool result = await _communityService.SaveCommunityMember(requestDto);
+                bool result = await _communityMemberService.SaveCommunityMember(requestDto);
 
                 if (result)
                 {

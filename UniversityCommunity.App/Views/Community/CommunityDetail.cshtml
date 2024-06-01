@@ -29,13 +29,22 @@
                         <p class="text">
                             @Model.Community.Description
                         </p>
-                        @* TODO Buraların veri tabanından okunacak şekilde al. *@
-                        <a href=""><h4>Yönetim Kurulu</h4></a>
-                        <p>-------</p>
-                        <a href=""><h4>Denetim Kurulu</h4></a>
-                        <p>-------</p>
-                        <a href=""><h4>Topluluk üyeleri</h4></a>
-                        <p>-------</p>
+                        <br />
+                        <h4>Danışman Hoca</h4>
+                        <p class="text">@Model.CommunityAdvisorAccount</p>
+                        <br />
+                        <h4>Topluluk Başkanı</h4>
+                        <p class="text">@Model.CommunityLeaderAccount</p>
+                        <br />
+                        <h4>Topluluk üyeleri</h4>
+                        <p class="text">
+                            @foreach (var member in Model.CommunityMembers)
+                            {
+                            <p>
+                                    @member
+                            </p>
+                            }
+                        </p>
                         <div class="information-wrap">
                             <div class="information">
                                 <div class="contact-icon">

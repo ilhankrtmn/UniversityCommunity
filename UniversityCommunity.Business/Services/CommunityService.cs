@@ -2,8 +2,6 @@
 using UniversityCommunity.Data.EntityFramework.Entities;
 using UniversityCommunity.Data.EntityFramework.Repositories.Interfaces;
 using UniversityCommunity.Data.EntityFramework.UnitOfWork;
-using UniversityCommunity.Data.Models;
-using UniversityCommunity.Data.Models.PageModel;
 
 namespace UniversityCommunity.Business.Services
 {
@@ -55,24 +53,6 @@ namespace UniversityCommunity.Business.Services
             return false;
         }
 
-        public async Task<bool> SaveCommunityMember(CommunityforPage requestDto)
-        {
-            requestDto.CommunityMember.CommunityId = requestDto.Community.Id;
-            var communityMember = _communityMemberRepository.CheckCommunityMember(new CheckCommunityMemberRequestDto
-            {
-                CommunityId = requestDto.CommunityMember.CommunityId,
-                Email = requestDto.CommunityMember.Email
-            });
-            if (communityMember)
-            {
-                return false;
-            }
-            else
-            {
-                _communityMemberRepository.Add(requestDto.CommunityMember);
-                await _unitOfWork.CompleteAsync();
-                return true;
-            }
-        }
+        
     }
 }

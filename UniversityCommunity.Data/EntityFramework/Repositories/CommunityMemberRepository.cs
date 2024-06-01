@@ -16,7 +16,7 @@ namespace UniversityCommunity.Data.EntityFramework.Repositories
 
         public bool CheckCommunityMember(CheckCommunityMemberRequestDto requestDto)
         {
-            return _context.CommunityMembers.Where(p => p.CommunityId == requestDto.CommunityId && p.Email == requestDto.Email).Any();
+            return _context.CommunityMembers.Where(p => p.UserTypeId == 4 && p.CommunityId == requestDto.CommunityId && p.Email == requestDto.Email).Any();
         }
     }
 }
