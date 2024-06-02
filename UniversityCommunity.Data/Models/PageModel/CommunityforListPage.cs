@@ -17,14 +17,7 @@ namespace UniversityCommunity.Data.Models.PageModel
         public List<string> CommunityMembers { get; set; }
 
 
-
-        public string AdvisorId { get; set; }
-        public string AdvisorName { get; set; }
         public IEnumerable<SelectListItem> AdvisorList { get; set; }
-
-
-        public string LeaderId { get; set; }
-        public string LeaderName { get; set; }
         public IEnumerable<SelectListItem> LeaderList { get; set; }
     }
 }

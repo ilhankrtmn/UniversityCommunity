@@ -33,7 +33,7 @@ namespace UniversityCommunity.App.Controllers
         {
             CommunityforListPage communityforListPage = new CommunityforListPage();
 
-            communityforListPage.Communities = await _communityService.GetAdminAnnouncementListAsync();
+            communityforListPage.Communities = await _communityService.GetAdminCommunityListAsync();
 
             return View(communityforListPage);
         }

@@ -20,6 +20,8 @@ namespace UniversityCommunity.Data.EntityFramework
         public DbSet<UserEmailOtp> UserEmailOtps { get; set; }
         public DbSet<OutgoingMail> OutgoingMails { get; set; }
         public DbSet<CommunityMember> CommunityMembers { get; set; }
+        public DbSet<CommunityEvent> CommunityEvents { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +49,11 @@ namespace UniversityCommunity.Data.EntityFramework
             modelBuilder.Entity<CommunityMember>().HasKey(p => p.Id);
             modelBuilder.Entity<CommunityMember>().Property(p => p.CreatedDate).HasDefaultValue(DateTime.Now);
 
+            modelBuilder.Entity<CommunityEvent>().HasKey(p => p.Id);
+            modelBuilder.Entity<CommunityEvent>().Property(p => p.Status).HasDefaultValue(0);
+            modelBuilder.Entity<CommunityEvent>().Property(p => p.CreatedDate).HasDefaultValue(DateTime.Now);
+
+            modelBuilder.Entity<EventType>().HasKey(p => p.Id);
         }
     }
 }

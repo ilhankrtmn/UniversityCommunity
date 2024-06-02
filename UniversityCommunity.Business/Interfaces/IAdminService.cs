@@ -1,4 +1,5 @@
-﻿using UniversityCommunity.Data.EntityFramework.Entities;
+﻿using System.Web.Mvc;
+using UniversityCommunity.Data.EntityFramework.Entities;
 
 namespace UniversityCommunity.Business.Interfaces
 {
@@ -8,5 +9,7 @@ namespace UniversityCommunity.Business.Interfaces
         Task<User> GetUserAsync(int userId);
         Task SaveorUpdateUser(User user);
         Task<bool> DeleteUser(int userId);
+        Task<List<SelectListItem>> GetCommunityEventTypeList();
+        Task<List<SelectListItem>> GetLeaderCommunityList(int userId);
     }
 }
