@@ -1,0 +1,211 @@
+﻿@model UniversityCommunity.Data.Models.PageModel.CommunityEventforPage;
+@using System;
+@using System.Linq;
+
+@{
+    ViewData["Title"] = "CommunityEventDetail";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<title>Etkinlik</title>
+<section class="main-content-w3layouts-agileits center-form">
+    <div class="container form-container">
+        <h3 class="tittle text-center">Etkinlik Detayı</h3>
+        <div class="inner-sec">
+            <div class="section-header">
+                @Html.HiddenFor(model => model.CommunityEvent.Id)
+                @Html.HiddenFor(model => model.CommunityEvent.CreatedDate)
+                @Html.HiddenFor(model => model.CommunityEvent.Status)
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Topluluk</label>
+                        @Html.DropDownListFor(model => model.CommunityEvent.CommunityId, new SelectList(Model.Communities, "Text", "Value", 0), "Topluluk seçiniz", new { @class = "form-control", required = "required", autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Etkinlik Türü</label>
+                        @Html.DropDownListFor(model => model.CommunityEvent.EventTypeId, new SelectList(Model.EventTypes, "Text", "Value", 0), "Etkinlik türünü seçiniz", new { @class = "form-control", required = "required", autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Etkinlik Adı</label>
+                        @Html.EditorFor(model => model.CommunityEvent.Name, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off", @disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Konuşmacı</label>
+                        @Html.EditorFor(model => model.CommunityEvent.Speaker, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off", @disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Panelist</label>
+                        @Html.EditorFor(model => model.CommunityEvent.Panelist, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off", @disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Etkinlik Tarihi</label>
+                        @Html.EditorFor(model => model.CommunityEvent.EventDate, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off", @disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Etkinlik Konusu</label>
+                        @Html.EditorFor(model => model.CommunityEvent.Subject, new { htmlAttributes = new { @class = "form-control", required = "required", autocomplete = "off", @disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Etkinlik İçeriği</label>
+                        @Html.TextAreaFor(model => model.CommunityEvent.Content, new
+                            {
+                                @class = "maxlength-textarea form-control",
+                                @data_placement = "bottom-right-inside",
+                                data_plugin = "maxlength",
+                                maxlength = "1000",
+                                rows = "5",
+                                placeholder = "Max 1000 karakter.",
+                                required = "required",
+                                contenteditable = "true",
+                                @disabled = "disabled"
+                            })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationCustom01">Talep Edilen Hizmet ve Malzemeler</label>
+                        @Html.TextAreaFor(model => model.CommunityEvent.Wants, new
+                            {
+                                @class = "maxlength-textarea form-control",
+                                @data_placement = "bottom-right-inside",
+                                data_plugin = "maxlength",
+                                maxlength = "1000",
+                                rows = "5",
+                                placeholder = "Max 1000 karakter.",
+                                required = "required",
+                                contenteditable = "true",
+                                @disabled = "disabled"
+                            })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button class="btn btn-success submit mb-4  mr-3" type="button" data-toggle="modal" data-entryid="@Model.CommunityEvent.Id" onclick='confirmEvent(this)'>
+                        <span class="text-uppercase hidden-md-down">Onayla</span>
+                    </button>
+
+                    <button class="btn btn-danger submit mb-4" type="button" data-toggle="modal" data-entryid="@Model.CommunityEvent.Id" onclick='rejectEvent(this)'>
+                        <span class="text-uppercase hidden-md-down">Reddet</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+    function confirmEvent(button) {
+        var entryID = $(button).data("entryid");
+
+        Swal.fire({
+            title: "Etkinlik başvurusunu onaylıyor musun?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Evet, onayla!",
+            cancelButtonText: "Vazgeç"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Admin/ConfirmRejectEvent",
+                    method: "POST",
+                    data: { eventId: entryID, status: 1 },
+                    success: function (response) {
+                        if (response == true) {
+                            Swal.fire({
+                                title: "Onaylandı!",
+                                text: "Etkinlik onaylandı.",
+                                icon: "success"
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                title: "Hata!",
+                                text: "Etkinlik onaylanamadı!",
+                                icon: "error"
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "Hata!",
+                            text: "Beklenmedik bir hata oluştu!",
+                            icon: "error"
+                        });
+                    }
+                });
+
+            }
+        });
+    }
+</script>
+
+<script>
+    function rejectEvent(button) {
+        var entryID = $(button).data("entryid");
+
+        Swal.fire({
+            title: "Etkinlik başvurusunu reddetmek istiyor musun?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Evet, reddet!",
+            cancelButtonText: "Vazgeç"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Admin/ConfirmRejectEvent",
+                    method: "POST",
+                    data: { eventId: entryID, status: 2 },
+                    success: function (response) {
+                        if (response == true) {
+                            Swal.fire({
+                                title: "Reddedildi!",
+                                text: "Etkinlik reddedildi.",
+                                icon: "success"
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                title: "Hata!",
+                                text: "Etkinlik reddedilemedi!",
+                                icon: "error"
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "Hata!",
+                            text: "Beklenmedik bir hata oluştu!",
+                            icon: "error"
+                        });
+                    }
+                });
+
+            }
+        });
+    }
+</script>
+

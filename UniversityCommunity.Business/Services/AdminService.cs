@@ -1,4 +1,5 @@
-﻿using UniversityCommunity.Business.Interfaces;
+﻿using System.Web.Mvc;
+using UniversityCommunity.Business.Interfaces;
 using UniversityCommunity.Data.EntityFramework.Entities;
 using UniversityCommunity.Data.EntityFramework.Repositories.Interfaces;
 using UniversityCommunity.Data.EntityFramework.UnitOfWork;
@@ -9,11 +10,15 @@ namespace UniversityCommunity.Business.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
+        private readonly ICommunityRepository _communityRepository;
+        private readonly ICommunityEventRepository _communityEventRepository;
 
-        public AdminService(IUnitOfWork unitOfWork, IUserRepository userRepository)
+        public AdminService(IUnitOfWork unitOfWork, IUserRepository userRepository, ICommunityRepository communityRepository, ICommunityEventRepository communityEventRepository)
         {
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
+            _communityRepository = communityRepository;
+            _communityEventRepository = communityEventRepository;
         }
 
         public async Task<List<User>> GetUserListAsync()
@@ -42,6 +47,34 @@ namespace UniversityCommunity.Business.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task<List<SelectListItem>> GetCommunityEventTypeList()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            var data = await _communityEventRepository.GetEventTypesAsync();
+
+            foreach (var item in data)
+            {
+                items.Add(new SelectListItem { Text = item.Id.ToString(), Value = item.Name });
+            }
+
+            return items;
+        }
+
+        public async Task<List<SelectListItem>> GetLeaderCommunityList(int userId)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            var data = await _communityRepository.FindListAsync(p => p.LeaderId == userId);
+
+            foreach (var item in data)
+            {
+                items.Add(new SelectListItem { Text = item.Id.ToString(), Value = item.Title });
+            }
+
+            return items;
         }
     }
 }

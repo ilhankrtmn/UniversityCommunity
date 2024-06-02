@@ -38,7 +38,7 @@
                            data-paging="true" data-filtering="true" data-sorting="true">
                         <thead>
                             <tr>
-                                <th data-name="raffleID" data-type="number" data-breakpoints="xs">User Id</th>
+                                <th data-name="Title" data-type="number" data-breakpoints="xs">User Id</th>
                                 <th data-name="Title">İsim</th>
                                 <th data-name="Title">Soy İsim</th>
                                 <th data-name="Title">Email</th>
@@ -124,7 +124,7 @@
                             if (response == true) {
                                 Swal.fire({
                                     title: "Silindi!",
-                                    text: "Duyuru silindi.",
+                                    text: "Kullanıcı silindi.",
                                     icon: "success"
                                 }).then(() => {
                                     location.reload();
@@ -133,7 +133,7 @@
                             else {
                                 Swal.fire({
                                     title: "Hata!",
-                                    text: "Duyuru silinemedi!",
+                                    text: "Kullanıcı silinemedi!",
                                     icon: "error"
                                 });
                             }

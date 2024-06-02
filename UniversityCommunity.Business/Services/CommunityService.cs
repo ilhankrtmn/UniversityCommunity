@@ -3,6 +3,7 @@ using UniversityCommunity.Business.Interfaces;
 using UniversityCommunity.Data.EntityFramework.Entities;
 using UniversityCommunity.Data.EntityFramework.Repositories.Interfaces;
 using UniversityCommunity.Data.EntityFramework.UnitOfWork;
+using UniversityCommunity.Data.Enums;
 using UniversityCommunity.Data.Models;
 
 namespace UniversityCommunity.Business.Services
@@ -11,16 +12,16 @@ namespace UniversityCommunity.Business.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICommunityRepository _communityRepository;
-        private readonly ICommunityMemberRepository _communityMemberRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ICommunityEventRepository _communityEventRepository;
 
-        public CommunityService(IUnitOfWork unitOfWork, ICommunityRepository communityRepository, ICommunityMemberRepository communityMemberRepository
-            , IUserRepository userRepository)
+        public CommunityService(IUnitOfWork unitOfWork, ICommunityRepository communityRepository, IUserRepository userRepository
+            , ICommunityEventRepository communityEventRepository)
         {
             _unitOfWork = unitOfWork;
             _communityRepository = communityRepository;
-            _communityMemberRepository = communityMemberRepository;
             _userRepository = userRepository;
+            _communityEventRepository = communityEventRepository;
         }
 
         public async Task<List<Community>> GetCommunityListAsync()
@@ -29,7 +30,7 @@ namespace UniversityCommunity.Business.Services
 
         }
 
-        public async Task<List<Community>> GetAdminAnnouncementListAsync()
+        public async Task<List<Community>> GetAdminCommunityListAsync()
         {
             return (await _communityRepository.GetAllAsync()).OrderByDescending(p => p.CreatedDate).ToList();
         }
@@ -76,6 +77,88 @@ namespace UniversityCommunity.Business.Services
             var user = await _userRepository.FindAsync(p => p.UserTypeId == requestDto.UserTypeId && p.Id == requestDto.UserId);
 
             return (user != null) ? $"{user.Name} {user.Surname}" : string.Empty;
+        }
+
+        public async Task<List<CommunityEvent>> GetCommunityEventListAsync(int userId)
+        {
+            int status = 0;
+            var user = await _userRepository.FindAsync(p => p.Id == userId);
+            if (user != null)
+            {
+                if (user.UserTypeId == (int)UserTypes.Admin)
+                {
+                    status = 1;
+
+                    return await _communityEventRepository.GetCommunityEventListAsync(new GetCommunityEventListRequestDto
+                    {
+                        UserId = 0,
+                        Status = status
+                    });
+                }
+                else if (user.UserTypeId == (int)UserTypes.Advisor)
+                {
+                    status = 0;
+
+                    return await _communityEventRepository.GetCommunityEventListAsync(new GetCommunityEventListRequestDto
+                    {
+                        UserId = userId,
+                        Status = status
+                    });
+                }
+                else if (user.UserTypeId == (int)UserTypes.Leader)
+                {
+                    status = 2;
+
+                    return await _communityEventRepository.GetCommunityEventListAsync(new GetCommunityEventListRequestDto
+                    {
+                        UserId = userId,
+                        Status = status
+                    });
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<CommunityEvent> GetCommunityEventAsync(int communityEventId)
+        {
+            return await _communityEventRepository.FindAsync(p => p.Id == communityEventId);
+        }
+
+        public async Task SaveorUpdateCommunityEvent(CommunityEvent communityEvent)
+        {
+            communityEvent.UpdatedDate = DateTime.Now;
+            _communityEventRepository.AddOrUpdate(communityEvent);
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task<bool> ConfirmRejectEventAsync(ConfirmRejectEventRequestDto requestDto)
+        {
+            int status = 0;
+            status = requestDto.Status switch
+            {
+                1 or 2 => 0,
+                3 or 4 => 1,
+                0 => status
+            };
+
+            var communityEvent = await _communityEventRepository.FindAsync(p => p.Id == requestDto.EventId && p.Status == status);
+            if (communityEvent != null)
+            {
+                communityEvent.Status = requestDto.Status;
+                communityEvent.UpdatedDate = DateTime.Now;
+                _communityEventRepository.Update(communityEvent);
+                await _unitOfWork.CompleteAsync();
+
+                return true;
+            }
+            return false;
         }
     }
 }
