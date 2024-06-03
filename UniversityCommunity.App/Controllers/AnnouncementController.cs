@@ -56,7 +56,7 @@ namespace UniversityCommunity.App.Controllers
         public async Task<IActionResult> SaveAnnouncement(Announcement announcement)
         {
             await _announcementService.SaveorUpdate(announcement);
-            return RedirectToAction("AnnouncementList", "Announcement");
+            return View(announcement);
         }
 
         [HttpPost]

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UniversityCommunity.App.Models;
 using UniversityCommunity.Business.Interfaces;
+using UniversityCommunity.Business.Session;
 using UniversityCommunity.Data.Models;
 
 namespace UniversityCommunity.App.Controllers
@@ -13,55 +14,6 @@ namespace UniversityCommunity.App.Controllers
         public AuthenticationController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Register()
-        {
-            //UserRegisterBody customerRegisterBody = new UserRegisterBody();
-
-            //customerRegisterBody.CityList = await _registerService.GetCitiesAsync();
-            //return View(customerRegisterBody);
-            return View();
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(UserRegisterBody customerRegisterBody)
-        {
-            //Customer customer = new Customer();
-            //customer.Name = customerRegisterBody.Name;
-            //customer.Surname = customerRegisterBody.Surname;
-            //customer.Email = customerRegisterBody.Email;
-            //customer.CityID = customerRegisterBody.CityID;
-            //customer.Password = customerRegisterBody.Password;
-
-            //customerRegisterBody.CityList = await _registerService.GetCitiesAsync();
-
-            //RegisterValidator registerValidator = new RegisterValidator();
-            //ValidationResult validationResult = registerValidator.Validate(customer);
-
-            //if (validationResult.IsValid)
-            //{
-            //    if (await _registerService.CheckRegisterMail(customerRegisterBody.Email))
-            //    {
-            //        await _registerService.InsertCustomer(customer);
-            //        return RedirectToAction("GameList", "Customer");
-            //    }
-            //    else
-            //    {
-            //        return RedirectToAction("Login", "Customer");
-            //    }
-            //}
-            //else
-            //{
-            //    foreach (var item in validationResult.Errors)
-            //    {
-            //        ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-            //    }
-            //}
-            //return View(customerRegisterBody);
-            return View();
         }
 
         [HttpGet]
@@ -78,8 +30,10 @@ namespace UniversityCommunity.App.Controllers
             var Id = await _authenticationService.CheckCustomerLogin(userLoginBody.Email, userLoginBody.Password);
             if (Id != 0)
             {
-                HttpContext.Session.SetString("Id", Id.ToString());
-                return RedirectToAction("Register", "Authentication");
+                var user = await _authenticationService.GetUser(Id);
+                SessionContext.SetInt("UserId", Id);
+                SessionContext.SetInt("UserTypeId", user.UserTypeId);
+                return RedirectToAction("CommunityList", "Community");
             }
             else
             {
@@ -97,6 +51,8 @@ namespace UniversityCommunity.App.Controllers
         public async Task<IActionResult> SendOtp(SendOtpRequestDto requestDto)
         {
             var response = await _authenticationService.SendOtp(requestDto);
+            SessionContext.SetString("email", requestDto.Email);
+
             return (response == true) ? RedirectToAction("CheckOtp", "Authentication") : RedirectToAction("SendOtp", "Authentication");
         }
 
@@ -109,8 +65,12 @@ namespace UniversityCommunity.App.Controllers
         [HttpPost]
         public async Task<IActionResult> CheckOtp(CheckOtpRequestDto requestDto)
         {
+            requestDto.Email = SessionContext.GetString("email");
+
             var response = await _authenticationService.CheckOtp(requestDto);
 
+            var user = await _authenticationService.GetUser(requestDto.Email);
+            SessionContext.SetInt("userId", user.Id);
             return (response == true) ? RedirectToAction("ResetPassword", "Authentication") : RedirectToAction("CheckOtp", "Authentication");
         }
 
@@ -123,10 +83,19 @@ namespace UniversityCommunity.App.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordRequestDto requestDto)
         {
+            requestDto.UserId = SessionContext.GetInt("userId");
+
             var response = await _authenticationService.ResetPassword(requestDto);
 
             return (response == true) ? RedirectToAction("Login", "Authentication") : RedirectToAction("ResetPassword", "Authentication");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            SessionContext.Remove("UserId");
+            SessionContext.Remove("UserTypeId");
+            return RedirectToAction("CommunityList", "Community");
+        }
     }
 }

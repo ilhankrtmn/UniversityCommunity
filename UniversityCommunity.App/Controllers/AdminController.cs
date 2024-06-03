@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using UniversityCommunity.Business.Interfaces;
+using UniversityCommunity.Business.Session;
 using UniversityCommunity.Business.ValidationRules;
 using UniversityCommunity.Data.Models;
 using UniversityCommunity.Data.Models.PageModel;
@@ -86,13 +87,9 @@ namespace UniversityCommunity.App.Controllers
         public async Task<IActionResult> AdminCommunityEventList()
         {
             CommunityEventforListPage communityEventforListPage = new CommunityEventforListPage();
-            /* 
-             * TODO Leader olan kullanıcı için detayları görüntüleme sayfası olmamalı
-             * Leader dışındaki diğer kullanıcılar için de edit kısmını görmemesi lazım.
-             */
 
-            // TODO HttpContext'ten oku.
-            int userId = 2;
+            int userId = SessionContext.GetInt("UserId");
+            int userTypeId = SessionContext.GetInt("UserTypeId");
             communityEventforListPage.CommunityEvents = await _communityService.GetCommunityEventListAsync(userId);
 
             if (communityEventforListPage.CommunityEvents != null)
@@ -109,8 +106,8 @@ namespace UniversityCommunity.App.Controllers
         public async Task<IActionResult> CommunityEventDetail(int communityEventId)
         {
             CommunityEventforPage communityEventforPage = new CommunityEventforPage();
-            // TODO HttpContext'ten oku.
-            int userId = 2;
+            int userId = SessionContext.GetInt("UserId");
+            int userTypeId = SessionContext.GetInt("UserTypeId");
 
             communityEventforPage.CommunityEvent = await _communityService.GetCommunityEventAsync(communityEventId);
             communityEventforPage.EventTypes = await _adminService.GetCommunityEventTypeList();
@@ -123,8 +120,7 @@ namespace UniversityCommunity.App.Controllers
         public async Task<IActionResult> SaveCommunityEvent(int communityEventId)
         {
             CommunityEventforPage communityEventforPage = new CommunityEventforPage();
-            // TODO HttpContext'ten oku.
-            int userId = 2;
+            int userId = SessionContext.GetInt("UserId");
 
             communityEventforPage.CommunityEvent = await _communityService.GetCommunityEventAsync(communityEventId);
             communityEventforPage.EventTypes = await _adminService.GetCommunityEventTypeList();
@@ -136,8 +132,7 @@ namespace UniversityCommunity.App.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveCommunityEvent(CommunityEventforPage communityEventforPage)
         {
-            // TODO HttpContext'ten oku.
-            int userId = 2;
+            int userId = SessionContext.GetInt("UserId");
             communityEventforPage.CommunityEvent.UserId = userId;
             await _communityService.SaveorUpdateCommunityEvent(communityEventforPage.CommunityEvent);
 
@@ -151,10 +146,18 @@ namespace UniversityCommunity.App.Controllers
         [HttpPost]
         public async Task<bool> ConfirmRejectEvent(int eventId, int status)
         {
-            /*
-             * TODO burada status değeri adminse 3 veya 4 gelirken danışman hoca ise 1 veya 2 olmalı
-             * Dilersen view'den gelirken değiştir. Dilersen de userId'den ya da userTypeId'ye göre manuel setle
-            */
+            int userId = SessionContext.GetInt("UserId");
+            int userTypeId = SessionContext.GetInt("UserTypeId");
+            if (userTypeId == 1)
+            {
+                switch (status)
+                {
+                    case 1:
+                        status = 3; break;
+                    case 2:
+                        status = 4; break;
+                }
+            }
             return await _communityService.ConfirmRejectEventAsync(new ConfirmRejectEventRequestDto
             {
                 EventId = eventId,

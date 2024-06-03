@@ -1,4 +1,5 @@
 ﻿@using System;
+@using UniversityCommunity.Business.Session
 @model UniversityCommunity.Data.Models.PageModel.CommunityEventforListPage;
 
 @{
@@ -11,15 +12,18 @@
 
     <div class="page">
         <div class="page-header">
-            <h1 class="page-title">Etkinlik Listesi</h1>
-            <p class="page-description"></p>
-            <div class="page-header-actions">
-                <a class="btn btn-sm btn-inverse btn-round" href="/Admin/SaveCommunityEvent/"
-                   target="_blank">
-                    <i class="icon wb-link" aria-hidden="true"></i>
-                    <span class="btn btn-primary submit mb-4">Etkinlik Oluştur</span>
-                </a>
-            </div>
+            @if (SessionContext.GetInt("UserTypeId") == 3)
+            {
+                <h1 class="page-title">Etkinlik Listesi</h1>
+                <p class="page-description"></p>
+                <div class="page-header-actions">
+                    <a class="btn btn-sm btn-inverse btn-round" href="/Admin/SaveCommunityEvent/"
+                       target="_blank">
+                        <i class="icon wb-link" aria-hidden="true"></i>
+                        <span class="btn btn-primary submit mb-4">Etkinlik Oluştur</span>
+                    </a>
+                </div>
+            }
         </div>
 
         <div class="page-content">
@@ -41,8 +45,14 @@
                                 <th data-name="Email">Etkinlik Türü</th>
                                 <th data-name="CreatedDate">Etkinlik Tarihi</th>
                                 <th data-name="status" data-filterable="true">Durum</th>
-                                <th data-name="button">Düzenle</th>
-                                <th data-name="button">Detayları Gör</th>
+                                @if (SessionContext.GetInt("UserTypeId") == 3)
+                                {
+                                    <th data-name="button">Düzenle</th>
+                                }
+                                else
+                                {
+                                    <th data-name="button">Detayları Gör</th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -51,7 +61,7 @@
                                 <tr>
                                     <td>@item.Id</td>
                                     <td>@item.Community.Title</td>
-                                    <td>@item.EventTypeId</td>
+                                    <td>@item.EventType.Name</td>
                                     <td>@item.EventDate.Value.ToString("MMMM-dd-yyyy HH:mm")</td>
                                     <td>
                                         @if (item.Status == 0)
@@ -75,12 +85,18 @@
                                             <span class="badge badge-table badge-danger">Admin Red</span>
                                         }
                                     </td>
-                                    <td>
-                                        @Html.ActionLink("Edit", "SaveCommunityEvent", "Admin", new { communityEventId = item.Id }, new { @class = "btn btn-primary" })
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink("Detayı Gör", "CommunityEventDetail", "Admin", new { communityEventId = item.Id }, new { @class = "btn btn-info" })
-                                    </td>
+                                    @if (SessionContext.GetInt("UserTypeId") == 3)
+                                    {
+                                        <td>
+                                            @Html.ActionLink("Edit", "SaveCommunityEvent", "Admin", new { communityEventId = item.Id }, new { @class = "btn btn-primary" })
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @Html.ActionLink("Detayı Gör", "CommunityEventDetail", "Admin", new { communityEventId = item.Id }, new { @class = "btn btn-info" })
+                                        </td>
+                                    }
                                 </tr>
                             }
                         </tbody>

@@ -47,7 +47,7 @@ namespace UniversityCommunity.Data.EntityFramework.Repositories
 
         public async Task<int> CheckUserEmailIdAsync(int userId, int pincode)
         {
-            var userEmailOtp = await _context.UserEmailOtps.Where(p => p.UserId == userId && p.Pincode == pincode && p.CreatedDate > DateTime.Now.AddMinutes(-2))
+            var userEmailOtp = await _context.UserEmailOtps.Where(p => p.UserId == userId && p.Pincode == pincode && p.CreatedDate > DateTime.Now.AddMinutes(-5))
                                                         .OrderByDescending(p => p.Id)
                                                         .FirstOrDefaultAsync();
 
