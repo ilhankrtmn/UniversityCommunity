@@ -23,6 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\UniversityCommunity_Dosyalar\Veri Tabanı\UniversityCommunity.bak = ..\UniversityCommunity_Dosyalar\Veri Tabanı\UniversityCommunity.bak
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{794195E2-FE96-4880-9681-DB6067E39F21}"
+	ProjectSection(SolutionItems) = preProject
+		..\UniversityCommunity_Dosyalar\Veri Tabanı\UniversityCommunity.bak = ..\UniversityCommunity_Dosyalar\Veri Tabanı\UniversityCommunity.bak
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
