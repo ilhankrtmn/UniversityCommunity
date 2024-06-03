@@ -1,5 +1,6 @@
 ﻿using UniversityCommunity.Business.Interfaces;
 using UniversityCommunity.Data;
+using User = UniversityCommunity.Data.EntityFramework.Entities.User;
 using UniversityCommunity.Data.EntityFramework.Repositories.Interfaces;
 using UniversityCommunity.Data.EntityFramework.UnitOfWork;
 using UniversityCommunity.Data.Models;
@@ -24,14 +25,13 @@ namespace UniversityCommunity.Business.Services
 
         public async Task<int> CheckCustomerLogin(string email, string password)
         {
-            var user = await _userRepository.FindAsync(p => p.Email == email && p.Password == password);
-
+            User user = await _userRepository.FindAsNoTrackingAsync(p => p.Email == email && p.Password == password);
             return (user == null) ? 0 : user.Id;
         }
 
         public async Task<bool> SendOtp(SendOtpRequestDto requestDto)
         {
-            var user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
+            User user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
             if (user == null)
             {
                 return false;
@@ -47,6 +47,7 @@ namespace UniversityCommunity.Business.Services
 
             _emailService.SendMail(requestDto.Email, "Şifre Değiştirme Doğrulaması", message);
             await _outgoingMailRepository.SendOtpMailAsync(user.Id, requestDto.Email, message);
+
             await _unitOfWork.CompleteAsync();
 
             return true;
@@ -54,8 +55,7 @@ namespace UniversityCommunity.Business.Services
 
         public async Task<bool> CheckOtp(CheckOtpRequestDto requestDto)
         {
-            requestDto.Email = "ilhankertmen_@outlook.com";
-            var user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
+            User user = await _userRepository.FindAsync(p => p.Email == requestDto.Email);
             if (user == null)
             {
                 return false;
@@ -73,8 +73,7 @@ namespace UniversityCommunity.Business.Services
 
         public async Task<bool> ResetPassword(ResetPasswordRequestDto requestDto)
         {
-            requestDto.UserId = 1;
-            var user = await _userRepository.FindAsync(p => p.Id == requestDto.UserId);
+            User user = await _userRepository.FindAsync(p => p.Id == requestDto.UserId);
             if (user == null)
             {
                 return false;
@@ -86,5 +85,13 @@ namespace UniversityCommunity.Business.Services
             return true;
         }
 
+        public async Task<User> GetUser(string email)
+        {
+            return await _userRepository.FindAsNoTrackingAsync(p => p.Email == email);
+        }
+        public async Task<User> GetUser(int Id)
+        {
+            return await _userRepository.FindAsNoTrackingAsync(p => p.Id == Id);
+        }
     }
 }

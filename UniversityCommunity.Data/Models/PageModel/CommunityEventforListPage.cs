@@ -6,7 +6,6 @@ namespace UniversityCommunity.Data.Models.PageModel
     public class CommunityEventforListPage
     {
         public List<CommunityEvent> CommunityEvents { get; set; }
-        public string CommunityTitle { get; set; }
     }
 
     public class CommunityEventforPage

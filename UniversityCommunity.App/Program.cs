@@ -1,11 +1,14 @@
 using UniversityCommunity.Data.EntityFramework;
 using UniversityCommunity.Business.Configuraions;
 using ELECTRACORE.Business.Utilities.Api.Extensions;
+using UniversityCommunity.Business.Session;
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
     var services = builder.Services;
+    services.AddHttpContextAccessor();
+
     builder.Services.AddControllersWithViews();
     services.AddDIServices();
 
@@ -26,6 +29,8 @@ try
         app.UseHsts();
     }
 
+    AppHttpContext.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());
+
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseSession();
@@ -45,4 +50,3 @@ catch (Exception ex)
 
     throw;
 }
-

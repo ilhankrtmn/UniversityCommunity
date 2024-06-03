@@ -24,21 +24,21 @@ namespace UniversityCommunity.Data.EntityFramework.Repositories
         {
             if (requestDto.Status == 1)
             {
-                return await _context.CommunityEvents.Include(p => p.Community)
+                return await _context.CommunityEvents.Include(p => p.Community).Include(p => p.EventType)
                 .Where(p => p.Status == requestDto.Status)
                 .OrderByDescending(p => p.CreatedDate)
                 .ToListAsync();
             }
             else if (requestDto.Status == 0)
             {
-                return await _context.CommunityEvents.Include(p => p.Community)
-                .Where(p => p.Community.AdvisorId == requestDto.UserId && p.Status == requestDto.Status)
+                return await _context.CommunityEvents.Include(p => p.Community).Include(p => p.EventType)
+                .Where(p => p.Community.AdvisorId == requestDto.UserId)
                 .OrderByDescending(p => p.CreatedDate)
                 .ToListAsync();
             }
             else
             {
-                return await _context.CommunityEvents.Include(p => p.Community)
+                return await _context.CommunityEvents.Include(p => p.Community).Include(p => p.EventType)
                .Where(p => p.UserId == requestDto.UserId)
                .OrderByDescending(p => p.CreatedDate)
                .ToListAsync();

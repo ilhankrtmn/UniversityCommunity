@@ -16,7 +16,7 @@
         public int Status { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
-
+        public EventType EventType { get; set; }
         public Community Community { get; set; }
     }
 }

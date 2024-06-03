@@ -43,59 +43,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <i class="fab fa-linode"></i> University Community
                     </a>
                 </div>
-@*                 @await Html.PartialAsync("LoginRegisterPartial")
- *@
-                @* <div class="col-md-4 log-icons text-right">
-
-                <ul class="social_list1 mt-3">
-
-                <li>
-                <a href="#" class="facebook1 mx-2">
-                <i class="fab fa-facebook-f"></i>
-
-                </a>
-                </li>
-                <li>
-                <a href="#" class="twitter2">
-                <i class="fab fa-twitter"></i>
-
-                </a>
-                </li>
-                <li>
-                <a href="#" class="dribble3 mx-2">
-                <i class="fab fa-dribbble"></i>
-                </a>
-                </li>
-                <li>
-                <a href="#" class="pin">
-                <i class="fab fa-pinterest-p"></i>
-                </a>
-                </li>
-                </ul>
-                </div>*@
+                @await Html.PartialAsync("LoginRegisterPartial")
             </div>
         </div>
         @await Html.PartialAsync("HeaderPartial")
 
     </header>
-    <!--//header-->
-    <!--/banner-->
-    @*<div class="banner-inner">
-    </div>*@
-    @*<ol class="breadcrumb">
-    <li class="breadcrumb-item">
-    <a href="index.html">Home</a>
-    </li>
-    <li class="breadcrumb-item active">Blog3</li>
-    </ol>*@
-    <!--//banner-->
-    <!--/main-->
     @RenderBody()
-    <!--//main-->
-    <!--footer-->
-    @*@await Html.PartialAsync("FooterPartial")*@
-    <!---->
-    <!-- js -->
     <script src="~/CoreBlogTema/js/jquery-2.2.3.min.js"></script>
     <!-- //js -->
     <!--/ start-smoth-scrolling -->
@@ -115,14 +69,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     <script>
         $(document).ready(function () {
-            /*
-                                    var defaults = {
-                                            containerID: 'toTop', // fading element id
-                                        containerHoverID: 'toTopHover', // fading element hover id
-                                        scrollSpeed: 1200,
-                                        easingType: 'linear'
-                                        };
-                                    */
 
             $().UItoTop({
                 easingType: 'easeOutQuart'
@@ -134,7 +80,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <span id="toTopHover" style="opacity: 1;"> </span>
     </a>
 
-    <!-- //Custom-JavaScript-File-Links -->
     <script src="~/CoreBlogTema/js/bootstrap.js"></script>
 
 
